@@ -1,188 +1,137 @@
+// Récupération du body
 const body = document.body;
 
+// Création du titre Pokédex
 const grandtitre = document.createElement('h1');
 grandtitre.innerHTML = 'Pokédex'
 body.appendChild(grandtitre);
 
+// Création du container qui contiendra les cases des Pokémons
 const container = document.createElement('div');
 container.setAttribute('class', 'container');
 body.appendChild(container);
 
-let limitePokedex = '151';
+// Création des variables de bases
+let limitePokedex = '151'; 
 let lienApi = `https://pokeapi.co/api/v2/pokemon?limit=${limitePokedex}`;
 
+// Tableau des types
+const types = 
+{
+    'rock' : 'ressources/roche.png',
+    'water': 'ressources/eau.png', 
+    'bug' : 'ressources/insecte.png',
+    'steel' : 'ressources/acier.png',
+    'grass' : 'ressources/plante.png',
+    'ice' : 'ressources/glace.png',
+    'fire' : 'ressources/feu.png',
+    'fairy' : 'ressources/fee.png',
+    'dragon' : 'ressources/dragon.png',
+    'ground' : 'ressources/sol.png',
+    'electric' : 'ressources/electric.png',
+    'psychic' : 'ressources/psy.png',
+    'dark' : 'ressources/tenebres.png',
+    'fighting' : 'ressources/combat.png',
+    'normal' : 'ressources/normal.png',
+    'poison' : 'ressources/poison.png',
+    'ghost' : 'ressources/spectre.png',
+    'flying' : 'ressources/vol.png'
+}
+
+// Affichage des pokémons
+recuperationDonnees(lienApi);
+
+// Fonction qui récupère les données de l'API et affiche les pokémons
 function recuperationDonnees(api)
 {
+    // Récupération des données de l'API
     fetch(api)
     .then(reponse => reponse.json())
     .then(donnees => 
     {
-        recuperationPokemon(donnees);
+        // Création d'un tableau qui stockera provisoirement les pokémons
+        let TousLesPkmn = [];
+        TousLesPkmn.push(donnees.results);
+
+        // Triage des pokémons pour qu'ils s'affichent dans l'ordre numérique
+        let listeTriePkmn = TousLesPkmn.sort((a,b) => 
+        {
+          return a.id - b.id;
+        });
+
+        // Affichage des pokémons
+        recuperationPokemon(listeTriePkmn[0]);
     });
 }
 
-recuperationDonnees(lienApi);
-
+// Fonction qui recupère les différentes informations sur les Pokémons
 function recuperationPokemon(infosPkmn)
 {
-    infosPkmn.results.forEach(donneePkmn => {
+    // Récupération des données de chaque pokémon
+    infosPkmn.forEach(donneePkmn => {
         fetch(donneePkmn.url)
         .then(reponsePkmn => reponsePkmn.json())
         .then(donneesPkmn => 
         {
+            // Création de la case d'information du pokémon
             const casesPokedex = document.createElement('div');
             casesPokedex.setAttribute('class', 'cases');
             container.appendChild(casesPokedex);
 
+            // Création du container qui contiendra le(s) type(s)
             const containerTypes = document.createElement('div');
             containerTypes.setAttribute('class', 'containerTypes');
             casesPokedex.appendChild(containerTypes);
 
-            if(donneesPkmn.types.length < 2)
+            // Récupération des types
+            donneesPkmn.types.forEach(type =>
             {
-                let premierType = donneesPkmn.types[0].type.name;
-
-                const imgPremierType = document.createElement('img');
-                imgPremierType.setAttribute('src', `${types(premierType)}`);
-                imgPremierType.setAttribute('class', 'imgType');
-                containerTypes.appendChild(imgPremierType);
-            }
-            else
-            {
-                let premierType = donneesPkmn.types[0].type.name;
-
-                const imgPremierType = document.createElement('img');
-                imgPremierType.setAttribute('src', `${types(premierType)}`);
-                imgPremierType.setAttribute('class', 'imgType');
-
-                let secondType = donneesPkmn.types[1].type.name;
-
-                const imgSecondType = document.createElement('img');
-                imgSecondType.setAttribute('src', `${types(secondType)}`);
-                imgSecondType.setAttribute('class', 'imgType');
-                containerTypes.appendChild(imgPremierType);
-                containerTypes.appendChild(imgSecondType);
-                
-            }
+                const imgType = document.createElement('img');
+                imgType.setAttribute('src', `${types[type.type.name]}`);
+                imgType.setAttribute('class', 'imgType');
+                containerTypes.appendChild(imgType);
+            })
             
+            // Création de l'image du pokémon
             const imgPkmn = document.createElement('img');
             imgPkmn.setAttribute('src', `${donneesPkmn.sprites.front_default}`);
-            imgPkmn.setAttribute('alt', `image représentant ${"bulbizarre"}`)
             casesPokedex.appendChild(imgPkmn);
 
-            let id;
+            /* Création du titre qui affichera le numéro du pokémon */
+            const numPkmn = document.createElement('h5');
 
             if(donneesPkmn.id < 10)
             {
-                id = `# 00${donneesPkmn.id}`;
+                numPkmn.innerHTML = `# 00${donneesPkmn.id}`;
             }
             else if (donneesPkmn.id < 100)
             {
-                id = `# 0${donneesPkmn.id}`;
+                numPkmn.innerHTML = `# 0${donneesPkmn.id}`;
             }
             else
             {
-                id = `${donneesPkmn.id}`;
+                numPkmn.innerHTML = `${donneesPkmn.id}`;
             }
 
-            const numPkmn = document.createElement('h5');
-            numPkmn.innerHTML = `${id}`;
             casesPokedex.appendChild(numPkmn);
             
+            /* Gestion de l'affichage du nom du pokémon en français*/
             let infoNomPkmn;
 
+            // Récupération du nom du pokémon via son nom anglais
             fetch(donneesPkmn.species.url) 
             .then(responseSpecies => responseSpecies.json())
             .then(donneesSpecies =>
             {
+                // Récupération du nom français
                 infoNomPkmn = `${donneesSpecies.names[4].name}`;
 
+                // Création du titre qui affichera le nom du pokémon
                 const nomPkmn = document.createElement('h4');
                 nomPkmn.innerHTML = infoNomPkmn;
+                imgPkmn.setAttribute('alt', `image représentant ${infoNomPkmn}`)
                 casesPokedex.appendChild(nomPkmn);
-            });
-            
+            });  
         });
     });
-}
-
-function types(type)
-{
-    switch(type)
-    {
-        case 'rock' :
-            return 'ressources/roche.png';
-            break;
-        
-        case 'water':
-            return 'ressources/eau.png';
-            break;
-        
-        case 'bug' :
-            return 'ressources/insecte.png';
-            break;
-
-        case 'steel' :
-            return 'ressources/acier.png';
-            break;
-        
-        case 'grass' :
-            return 'ressources/plante.png';
-            break;
-        
-        case 'ice' :
-            return 'ressources/glace.png';
-            break;
-        
-        case 'fire' :
-            return 'ressources/feu.png';
-            break;
-        
-        case 'fairy' :
-            return 'ressources/fee.png';
-            break;
-        
-        case 'dragon' :
-            return 'ressources/dragon.png';
-            break;
-        
-        case 'ground' :
-            return 'ressources/sol.png';
-            break;
-        
-        case 'electric' :
-            return 'ressources/electric.png';
-            break;
-        
-        case 'psychic' :
-            return 'ressources/psy.png';
-            break;
-        
-        case 'dark' :
-            return 'ressources/tenebres.png';
-            break;
-
-        case 'fighting' :
-            return 'ressources/combat.png';
-            break;
-
-        case 'normal' :
-            return 'ressources/normal.png';
-            break;
-        
-        case 'poison' :
-            return 'ressources/poison.png';
-            break;
-        
-        case 'ghost' :
-            return 'ressources/spectre.png';
-            break;
-
-        case 'flying' :
-            return 'ressources/vol.png';
-            break;
-
-        default :
-            return 'ressources/inconnu.png';
-    }
 }
