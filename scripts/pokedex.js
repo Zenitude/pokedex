@@ -162,7 +162,7 @@ function types(type)
             return 'ressources/tenebres.png';
             break;
 
-        case 'Fighting' :
+        case 'fighting' :
             return 'ressources/combat.png';
             break;
 
