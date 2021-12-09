@@ -1,5 +1,5 @@
 # Site - Pokedex
-Formation GRETA - Projet N°5 : Recherche API 
+Formation GRETA - Projet N°4 : Recherche API 
 * Langages utilisés :  HTML, CSS, JavaScript
 * Thème choisi : Pokedex
 
