@@ -76,6 +76,7 @@ function recuperationPokemon(infosPkmn)
             // Création de la case d'information du pokémon
             const casesPokedex = document.createElement('div');
             casesPokedex.setAttribute('class', 'cases');
+	        casesPokedex.addEventListener('click', afficherShiny);
             container.appendChild(casesPokedex);
 
             // Création du container qui contiendra le(s) type(s)
@@ -96,6 +97,19 @@ function recuperationPokemon(infosPkmn)
             const imgPkmn = document.createElement('img');
             imgPkmn.setAttribute('src', `${donneesPkmn.sprites.front_default}`);
             casesPokedex.appendChild(imgPkmn);
+
+            // Modifier l'image pour afficher la version shiny au clic sur la case et inversement
+	        function afficherShiny()
+            {
+                if(imgPkmn.src === `${donneesPkmn.sprites.front_default}`)
+                {
+                    imgPkmn.setAttribute('src', `${donneesPkmn.sprites.front_shiny}`);
+                }
+                else
+                {
+                    imgPkmn.setAttribute('src', `${donneesPkmn.sprites.front_default}`);
+                }
+            }
 
             /* Création du titre qui affichera le numéro du pokémon */
             const numPkmn = document.createElement('h5');
