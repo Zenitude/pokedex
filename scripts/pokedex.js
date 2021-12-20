@@ -103,11 +103,11 @@ function recuperationPokemon(infosPkmn)
             {
                 if(imgPkmn.src === `${donneesPkmn.sprites.front_default}`)
                 {
-                    imgPkmn.setAttribute('src', `${donneesPkmn.sprites.front_shiny}`);
+                    imgPkmn.setAttribute('src', `https://www.pokebip.com/pages/jeuxvideo/dossier_shasse/imagerie/home/${donneesPkmn.id}.png`);
                 }
                 else
                 {
-                    imgPkmn.setAttribute('src', `${donneesPkmn.sprites.front_default}`);
+                    imgPkmn.setAttribute('src', `https://www.pokebip.com/pokedex-images/300/${donneesPkmn.id}.png`);
                 }
             }
 
