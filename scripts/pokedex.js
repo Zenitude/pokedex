@@ -95,7 +95,7 @@ function recuperationPokemon(infosPkmn)
             
             // Création de l'image du pokémon
             const imgPkmn = document.createElement('img');
-            imgPkmn.setAttribute('src', `${donneesPkmn.sprites.front_default}`);
+            imgPkmn.setAttribute('src', `https://www.pokebip.com/pokedex-images/300/${donneesPkmn.id}.png`);
             casesPokedex.appendChild(imgPkmn);
 
             // Modifier l'image pour afficher la version shiny au clic sur la case et inversement
