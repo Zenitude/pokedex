@@ -101,7 +101,7 @@ function recuperationPokemon(infosPkmn)
             // Modifier l'image pour afficher la version shiny au clic sur la case et inversement
 	        function afficherShiny()
             {
-                if(imgPkmn.src === `${donneesPkmn.sprites.front_default}`)
+                if(imgPkmn.src === `https://www.pokebip.com/pokedex-images/300/${donneesPkmn.id}.png`)
                 {
                     imgPkmn.setAttribute('src', `https://www.pokebip.com/pages/jeuxvideo/dossier_shasse/imagerie/home/${donneesPkmn.id}.png`);
                 }
