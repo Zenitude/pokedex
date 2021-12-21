@@ -124,7 +124,7 @@ function recuperationPokemon(infosPkmn)
             }
             else
             {
-                numPkmn.innerHTML = `${donneesPkmn.id}`;
+                numPkmn.innerHTML = `# ${donneesPkmn.id}`;
             }
 
             casesPokedex.appendChild(numPkmn);
