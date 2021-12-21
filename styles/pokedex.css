@@ -57,6 +57,7 @@ h1
     align-self: center;
     justify-self: center;
     transform: translateY(20px);
+    cursor: pointer;
 }
 
 .cases h5
@@ -89,4 +90,5 @@ h1
 .containerTypes .imgType
 {
     width: 40%;
+    cursor: default;
 }
